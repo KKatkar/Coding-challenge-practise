@@ -1,0 +1,46 @@
+// Rotated Sorted array
+// leetcode: https://leetcode.com/problems/search-in-rotated-sorted-array/
+
+// Java Solution
+
+class Solution {
+    public int search(int[] nums, int target) {
+        if(nums.length ==1){
+            return nums[0] == target? 0:-1;
+        }
+        int start = nums[0];
+        int left = 0;
+        int len = nums.length;
+        
+        int right = len - 1;
+        
+        // Binary search
+        while(left<right){
+            int mid = left + (right-left)/2;
+            // System.out.println(mid);
+            if(nums[mid] == target)
+                return mid;
+            
+            // Check if the target belongs to the first half of rotated list
+            if(target >= start){
+                if(nums[mid]<start || nums[mid] > target)
+                    right = mid;
+                else
+                    left = mid+1;
+            }
+            // Check if the target belongs to the second half of rotated list
+            else{
+                if(nums[mid]>=start || nums[mid] <target)
+                    left = mid+1;
+                else
+                    right = mid;
+            }
+
+        }
+        return nums[left] == target?left: -1; // Target exists on the "left" index or -1 (does not exist) 
+    }
+    
+}
+
+// Time complexity: O(log n) -> where n: size of array
+// Space Complexity: O(1)

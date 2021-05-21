@@ -1,0 +1,61 @@
+// Generate Parenthesis
+// leetcode: https://leetcode.com/problems/generate-parentheses/submissions/
+
+// Java intuitive solution
+
+class Solution {
+    List<String> generatedParenthesis;
+    int parenthesisLength;
+    
+    // Options/Branches for our decision tree
+    // 1. Open 2. Close
+    // Start will always be Open
+    
+    public List<String> generateParenthesis(int n) {
+        //initialization
+        this.generatedParenthesis = new ArrayList<>();
+        this.parenthesisLength = n*2;
+        
+        StringBuilder currentParenthesisState = new StringBuilder("(");
+        
+        // call helper function
+        this.setParenthesisByDFS(currentParenthesisState, n-1, n);
+        
+        return this.generatedParenthesis;
+        
+    }
+    
+    private void setParenthesisByDFS(StringBuilder currentState,int open, int close){
+        int currentStateLength = currentState.length();
+        // Terminating statement
+        if(currentStateLength == this.parenthesisLength){
+            this.generatedParenthesis.add(currentState.toString());
+        }
+        // process permutations
+        else{
+            // Decision 1
+            if(open>0){
+                currentState.append("(");
+                setParenthesisByDFS(currentState, open-1,close);
+                
+                currentState.deleteCharAt(currentStateLength);
+            }
+            // Decision 2
+            // Check if parenthesis are valid
+            if(close > open){
+                currentState.append(")");
+                setParenthesisByDFS(currentState, open, close-1);
+                
+                currentState.deleteCharAt(currentStateLength);
+            }
+            
+        }
+    }
+   
+}
+
+// Time Complexity:
+// For a decision tree: O(branching factor ^heigth) = O(2^(n*2)) where n is input
+
+// Additional Space Complexity:
+// StringBuilder: O(n*2)

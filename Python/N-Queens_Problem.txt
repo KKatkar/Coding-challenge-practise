@@ -1,1 +1,96 @@
+# N-Queens
+# DFS with backtracking
 
+# Python solution
+
+class Solution:
+    # Global variables
+    all_queen_arrangements = []
+    board_length = 0
+    
+    def solveNQueens(self, n: int) -> List[List[str]]:
+        # List of all queens situated till this stage
+        queen_list = []
+        
+        self.board_length = n
+        
+        invalid_index_set1 = set() # backward diagonal indexes are invalid
+        invalid_index_set2 = set() # forward diagonal indexes are invalid
+        
+        # pass to dfs for all combinations
+        self.getQueenArrangements(queen_list, n, invalid_index_set1, invalid_index_set2)
+        
+        return self.all_queen_arrangements
+        
+        
+        
+    def getQueenArrangements(self, queen_list, n, invalid_index_set1, invalid_index_set2):
+        # DFS with backtracking to find all valid arrangements 
+        # Terminating condition
+        if(n==0):
+            self.all_queen_arrangements.append(self.process_queen_arrangement(queen_list))
+        # Recusion : DFS Backtracking
+        else:
+            for index in range(self.board_length):
+                if(index not in queen_list):
+                    if(index not in invalid_index_set1 and index not in invalid_index_set2):
+                        # Creates new state
+                        queen_list.append(index)
+                        self.getQueenArrangements(queen_list, n-1, self.get_invalid_index_set1(index, invalid_index_set1), 
+                                             self.get_invalid_index_set2(index, invalid_index_set2))
+                        # Goes back to current state
+                        queen_list.pop()
+                        
+        
+    def get_invalid_index_set1(self, index, invalid_set):
+        # find next backward diagonal invalid spot
+        
+        new_invalid_set = set()
+        
+        for i in invalid_set:
+            if(i-1>=0):
+                new_invalid_set.add(i-1)
+                
+        if(index - 1 >= 0):
+            new_invalid_set.add(index - 1)
+            
+        return new_invalid_set
+    
+    
+    
+    def get_invalid_index_set2(self, index, invalid_set):
+        # find next forward diagonal invalid cells
+        
+        new_invalid_set = set()
+        
+        for i in invalid_set:
+            if(i+1 < self.board_length):
+                new_invalid_set.add(i+1)
+                
+        if(index + 1 < self.board_length):
+            new_invalid_set.add(index + 1)
+            
+        return new_invalid_set
+        
+        
+        
+    def process_queen_arrangement(self, queen_list: List[int]) -> List[str]:
+        # Process output in desired format
+        
+        processed_board = list()
+        empty_row = self.board_length * "."
+        
+        for index in queen_list:
+            current_row = empty_row[:]
+            current_row = current_row[:index] + "Q" + current_row[index+1:]
+            processed_board.append(current_row)
+            
+        return processed_board
+            
+        
+        
+# Time Complexity:
+#     O(linear_search on line 30 * branching_factor^height) -> O(n* n^n)
+
+# Additional Space Complexity:
+#     O(3n) -> O(n)

@@ -90,7 +90,7 @@ class Solution:
         
         
 # Time Complexity:
-#     O(linear_search on line 30 * branching_factor^height) -> O(n* n^n)
+#     O(linear_search on line 35 * branching_factor^height) -> O(n* n^n)
 
 # Additional Space Complexity:
 #     O(3n) -> O(n)

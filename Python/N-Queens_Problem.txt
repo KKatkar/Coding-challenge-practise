@@ -24,7 +24,7 @@ class Solution:
         
         
         
-    def getQueenArrangements(self, queen_list, n, invalid_index_set1, invalid_index_set2):
+    def get_queen_arrangements(self, queen_list, n, invalid_index_set1, invalid_index_set2):
         # DFS with backtracking to find all valid arrangements 
         # Terminating condition
         if(n==0):
